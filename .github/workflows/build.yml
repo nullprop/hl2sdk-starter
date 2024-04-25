@@ -1,0 +1,27 @@
+name: Build project
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        buildtype: ['debug', 'release']
+        arch: ['x86', 'x64']
+    runs-on: ${{matrix.os}}
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+        with:
+          path: 'hl2sdk-starter'
+          submodules: 'recursive'
+      - name: Install dependencies
+        run: sudo apt-get update && \
+          sudo apt-get install gcc gcc-multilib g++ g++-multilib \
+          python3 python3-pip python3-setuptools python3-wheel ninja-build && \
+          pip3 install --user meson
+      - name: Build ${{matrix.arch}} ${{matrix.buildtype}}
+        run: cd ${{ github.workspace }}/hl2sdk-starter && \
+          meson setup -D arch=${{matrix.arch}} -D buildtype=${{matrix.buildtype}} build && \
+          cd build && \
+          meson compile
+
