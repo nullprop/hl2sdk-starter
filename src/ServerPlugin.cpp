@@ -155,3 +155,8 @@ void ServerPlugin::ListenToGameEvent(const char* name)
     m_engineInterfaces.gameEventManager->AddListener(this, name, true);
     m_gameEventsHooked = true;
 }
+
+CON_COMMAND(example, "Example command")
+{
+    Msg("[ServerPlugin] Scientist: \"Do you know who ate all the donuts?\"\n");
+}
