@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'hl2sdk-starter'
           submodules: 'recursive'
@@ -26,4 +26,9 @@ jobs:
           meson setup -D arch=${{matrix.arch}} -D buildtype=${{matrix.buildtype}} build &&
           cd build &&
           meson compile
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{matrix.os}}_${{matrix.arch}}_${{matrix.buildtype}}_${{GITHUB_SHA}}
+          path: ${{ github.workspace }}/hl2sdk-starter/build/src/server_plugin.so
 
