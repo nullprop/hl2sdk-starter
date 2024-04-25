@@ -238,8 +238,8 @@ elif host_system == 'linux'
   if arch == 'x86'
     dir_x86 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux')
     sdk_deps += [
-      cpp.find_library('libtier0_srv', dirs: [dir_x86], required: true),
-      cpp.find_library('libvstdlib_srv', dirs: [dir_x86], required: true),
+      cpp.find_library('tier0_srv', dirs: [dir_x86], required: true),
+      cpp.find_library('vstdlib_srv', dirs: [dir_x86], required: true),
       cpp.find_library('mathlib_i486', dirs: [dir_x86], required: true),
       cpp.find_library('tier1_i486', dirs: [dir_x86], required: true),
       cpp.find_library('tier2_i486', dirs: [dir_x86], required: true),
@@ -248,8 +248,8 @@ elif host_system == 'linux'
   elif arch == 'x64'
     dir_x64 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux64')
     sdk_deps += [
-      cpp.find_library('libtier0_srv', dirs: [dir_x64], required: true),
-      cpp.find_library('libvstdlib_srv', dirs: [dir_x64], required: true),
+      cpp.find_library('tier0_srv', dirs: [dir_x64], required: true),
+      cpp.find_library('vstdlib_srv', dirs: [dir_x64], required: true),
       cpp.find_library('mathlib', dirs: [dir_x64], required: true),
       cpp.find_library('tier1', dirs: [dir_x64], required: true),
     ]
