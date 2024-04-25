@@ -214,7 +214,7 @@ sdk_includes = include_directories([
 sdk_deps = []
 if host_system == 'windows'
   if arch == 'x86'
-    dir_x86 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux')
+    dir_x86 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/public')
     sdk_deps += [
       cpp.find_library('mathlib', dirs: [dir_x86], required: true),
       cpp.find_library('tier0', dirs: [dir_x86], required: true),
@@ -224,7 +224,7 @@ if host_system == 'windows'
       cpp.find_library('vstdlib', dirs: [dir_x86], required: true),
     ]
   elif arch == 'x64'
-    dir_x64 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux64')
+    dir_x64 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/public/win64')
     sdk_deps += [
       cpp.find_library('mathlib', dirs: [dir_x64], required: true),
       cpp.find_library('tier0', dirs: [dir_x64], required: true),
