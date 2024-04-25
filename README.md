@@ -26,7 +26,7 @@ cd ../..
 
 2. Setup Meson build folder
 ```
-meson setup -D engine=tf2 -D arch=x86 -D buildtype=debug build
+meson setup -D arch=x86 -D buildtype=debug build
 ```
 
 3. Build with Meson

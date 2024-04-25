@@ -1,10 +1,4 @@
 option(
-  'engine',
-  description: 'The engine version to target',
-  type: 'string',
-  value: 'tf2'
-)
-option(
   'arch',
   description: 'The architecture to target',
   type: 'string',
