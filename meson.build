@@ -27,23 +27,53 @@ endif
 # Warnings
 compiler_args += [
   '-Wall',
-  '-Werror',
-  '-Wno-overloaded-virtual',
 ]
+if compiler == 'msvc'
+  compiler_args += [
+    # '/WX',
+  ]
+elif compiler == 'gcc'
+  compiler_args += [
+    '-Werror',
+    '-Wno-overloaded-virtual',
+  ]
+else
+  error('Unsupported compiler "@0@"', compiler)
+endif
 
 # Debug/Release target
 if buildtype == 'debug'
   compiler_args += [
     '-DDEBUG',
     '-D_DEBUG',
-    '-g',
-    '-O0',
   ]
+  if compiler == 'msvc'
+    compiler_args += [
+      '/Od',
+    ]
+  elif compiler == 'gcc'
+    compiler_args += [
+      '-g',
+      '-O0',
+    ]
+  else
+    error('Unsupported compiler "@0@"', compiler)
+  endif
 else
   compiler_args += [
     '-DNDEBUG',
-    '-O3',
   ]
+  if compiler == 'msvc'
+    compiler_args += [
+      '/O2',
+    ]
+  elif compiler == 'gcc'
+    compiler_args += [
+      '-O3',
+    ]
+  else
+    error('Unsupported compiler "@0@"', compiler)
+  endif
 endif
 
 # OS
@@ -88,21 +118,27 @@ endif
 
 # CPU architecture
 if arch == 'x86'
-  compiler_args += [
-    '-m32',
-  ]
-  linker_args += [
-    '-m32',
-  ]
+  if compiler == 'gcc'
+    compiler_args += [
+      '-m32',
+    ]
+    linker_args += [
+      '-m32',
+    ]
+  endif
 elif arch == 'x64'
   compiler_args += [
-    '-m64',
     '-DX64BITS',
     '-DPLATFORM_64BITS',
   ]
-  linker_args += [
-    '-m64',
-  ]
+  if compiler == 'gcc'
+    compiler_args += [
+      '-m64',
+    ]
+    linker_args += [
+      '-m64',
+    ]
+  endif
 else
   error('Unsupported arch "@0@"', arch)
 endif
