@@ -4,8 +4,15 @@ A starter template for hl2sdk server plugins.
 
 ## Requirements
 
-- Meson
-- MSVC / GCC
+Meson, Ninja, gcc.
+
+## Support
+
+| Compiler | Linux x86 | Linux x64 | Windows x86 | Windows x64 |
+| ----     | ----      | ----      | ----        | ----        |
+| gcc      | yes       | yes       | ?           | ?           |
+| clang    | ?         | ?         | ?           | ?           |
+| msvc     | ?         | ?         | ?           | ?           |
 
 ## Building
 
