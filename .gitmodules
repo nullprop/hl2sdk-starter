@@ -1,0 +1,3 @@
+[submodule "include/hl2sdk"]
+	path = include/hl2sdk
+	url = https://github.com/alliedmodders/hl2sdk.git
