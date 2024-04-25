@@ -24,14 +24,15 @@ struct EngineInterfaces
     {
     }
 
-    EngineInterfaces(CreateInterfaceFn engineFactory, CreateInterfaceFn serverFactory)
+    EngineInterfaces(CreateInterfaceFn engineFactory, CreateInterfaceFn serverFactory) :
+        EngineInterfaces()
     {
         // Engine interfaces
         cvar         = (ICvar*)engineFactory(CVAR_QUERY_INTERFACE_VERSION, NULL);
         engineServer = (IVEngineServer*)engineFactory(INTERFACEVERSION_VENGINESERVER, NULL);
         engineTrace  = (IEngineTrace*)engineFactory(INTERFACEVERSION_ENGINETRACE_SERVER, NULL);
         gameEventManager =
-            (IGameEventManager2*)engineFactory(INTERFACEVERSION_GAMEEVENTSMANAGER, NULL);
+            (IGameEventManager2*)engineFactory(INTERFACEVERSION_GAMEEVENTSMANAGER2, NULL);
         serverPluginHelpers =
             (IServerPluginHelpers*)engineFactory(INTERFACEVERSION_ISERVERPLUGINHELPERS, NULL);
         uniformRandomStream =
