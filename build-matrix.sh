@@ -43,7 +43,8 @@ then
     git remote set-branches origin '*'
     git fetch --all
     echo "Available branches:"
-    echo "$(git branch --all)"
+    git branch --all
+    cd "$ROOT"
 fi
 
 # make sure build dir exists
