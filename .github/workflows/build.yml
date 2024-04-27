@@ -2,12 +2,7 @@ name: Build project
 on: [push, workflow_dispatch]
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        arch: ['x86', 'x64']
-        buildtype: ['debug', 'release']
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
@@ -20,15 +15,13 @@ jobs:
           sudo apt-get install gcc gcc-multilib g++ g++-multilib
           python3 python3-pip python3-setuptools python3-wheel ninja-build &&
           pip3 install --user meson
-      - name: Build ${{matrix.arch}} ${{matrix.buildtype}}
+      - name: Build
         run: >
           cd ${{ github.workspace }}/hl2sdk-starter &&
-          meson setup -D arch=${{matrix.arch}} -D buildtype=${{matrix.buildtype}} build &&
-          cd build &&
-          meson compile
-      - name: Upload plugin artifact
+          ./build-matrix.sh
+      - name: Upload binaries
         uses: actions/upload-artifact@v4
         with:
-          name: ${{matrix.os}}_${{matrix.arch}}_${{matrix.buildtype}}_${{github.sha}}
-          path: ${{ github.workspace }}/hl2sdk-starter/build/src/server_plugin.so
+          name: binaries_${{github.sha}}
+          path: ${{ github.workspace }}/hl2sdk-starter/bin/*.so
 
