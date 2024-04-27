@@ -36,6 +36,16 @@ BRANCHES=(
 ROOT=$(pwd)
 HL2SDK="$ROOT/include/hl2sdk"
 
+# --depth=1 in workflow runners
+if [ "$CI" = "true" ]
+then
+    cd "$HL2SDK"
+    git remote set-branches origin '*'
+    git fetch --all
+    echo "Available branches:"
+    echo "$(git branch --all)"
+fi
+
 # make sure build dir exists
 if [ -d "bin" ]
 then
@@ -46,9 +56,6 @@ mkdir bin
 for BRANCH in "${BRANCHES[@]}"
 do
     cd "$HL2SDK"
-    git fetch --all
-    echo "Available branches:"
-    echo "$(git branch --all)"
     git checkout "$BRANCH"
     git pull
     cd "$ROOT"
