@@ -1,6 +1,5 @@
 #include "ServerPlugin.h"
 #include "tier1.h"
-#include "tier2.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -16,7 +15,6 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR(
 bool ServerPlugin::Load(CreateInterfaceFn engineFactory, CreateInterfaceFn serverFactory)
 {
     ConnectTier1Libraries(&engineFactory, 1);
-    // ConnectTier2Libraries(&engineFactory, 1);
 
     m_engineInterfaces = EngineInterfaces(engineFactory, serverFactory);
     if (!m_engineInterfaces.IsValid())
@@ -45,7 +43,6 @@ void ServerPlugin::Unload()
     }
 
     ConVar_Unregister();
-    // DisconnectTier2Libraries();
     DisconnectTier1Libraries();
 }
 
