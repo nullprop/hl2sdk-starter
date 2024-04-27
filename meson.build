@@ -34,7 +34,7 @@ if compiler == 'msvc'
   ]
 elif compiler == 'gcc'
   compiler_args += [
-    '-Werror',
+    # '-Werror',
     '-Wno-overloaded-virtual',
   ]
 else
@@ -108,6 +108,7 @@ elif host_system == 'linux'
     '-DNO_MALLOC_OVERRIDE',
     '-msse',
     '-fPIC',
+    '-fpermissive',
   ]
   linker_args += [
     '-static-libgcc',
@@ -151,7 +152,6 @@ if host_system == 'linux' and buildtype == 'release'
 endif
 if host_system == 'linux' and arch == 'x64'
   compiler_args += [
-    '-fpermissive',
     # CThreadSpinRWLock() COMPILE_TIME_ASSERT wrong LockInfo_t size
     '-U_DEBUG',
   ]
@@ -193,12 +193,24 @@ if host_system == 'windows'
   endif
 elif host_system == 'linux'
   if arch == 'x86'
-    dir_x86 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux')
+    dirs_x86 = [
+      join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux'),
+      join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/public/linux32'),
+    ]
     sdk_deps += [
-      cpp.find_library('mathlib_i486', dirs: [dir_x86], required: true),
-      cpp.find_library('tier0_srv', dirs: [dir_x86], required: true),
-      cpp.find_library('tier1_i486', dirs: [dir_x86], required: true),
-      cpp.find_library('vstdlib_srv', dirs: [dir_x86], required: true),
+      cpp.find_library('mathlib', dirs: [dirs_x86], required: false),
+      cpp.find_library('mathlib_i486', dirs: [dirs_x86], required: false),
+
+      cpp.find_library('tier0', dirs: [dirs_x86], required: false),
+      cpp.find_library('tier0_i486', dirs: [dirs_x86], required: false),
+      cpp.find_library('tier0_srv', dirs: [dirs_x86], required: false),
+
+      cpp.find_library('tier1', dirs: [dirs_x86], required: false),
+      cpp.find_library('tier1_i486', dirs: [dirs_x86], required: false),
+
+      cpp.find_library('vstdlib', dirs: [dirs_x86], required: false),
+      cpp.find_library('vstdlib_i486', dirs: [dirs_x86], required: false),
+      cpp.find_library('vstdlib_srv', dirs: [dirs_x86], required: false),
     ]
   elif arch == 'x64'
     dir_x64 = join_paths(meson.current_source_dir(), 'include/hl2sdk/lib/linux64')

@@ -124,9 +124,14 @@ class ServerPlugin : public IServerPluginCallbacks, IGameEventListener2
                  const char*           pCvarName,
                  const char*           pCvarValue
              ) override;
+    // Some versions of IServerPluginCallbacks have these:
+    void inline OnEdictAllocated(edict_t *edict) {}
+    void inline OnEdictFreed(const edict_t* edict) {}
 
     // IGameEventListener2 interface
     void FireGameEvent(IGameEvent* event) override;
+    // Some versions of IGameEventListener2 have these:
+    int inline GetEventDebugID(){ return -1; }
 
     void ListenToGameEvent(const char* name);
 
