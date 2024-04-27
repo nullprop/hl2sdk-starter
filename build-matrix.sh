@@ -36,12 +36,12 @@ BRANCHES=(
 ROOT=$(pwd)
 HL2SDK="$ROOT/include/hl2sdk"
 
-# --depth=1 in workflow runners
+# --depth=1 checkout in workflow runners has no branch info
 if [ "$CI" = "true" ]
 then
     cd "$HL2SDK"
     git remote set-branches origin '*'
-    git fetch --all
+    git fetch --depth=1
     echo "Available branches:"
     git branch --all
     cd "$ROOT"
