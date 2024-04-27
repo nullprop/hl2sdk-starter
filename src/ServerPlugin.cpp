@@ -35,7 +35,7 @@ bool ServerPlugin::Load(CreateInterfaceFn engineFactory, CreateInterfaceFn serve
 
 void ServerPlugin::Unload()
 {
-    Msg("[ServerPlugin] Unload");
+    Msg("[ServerPlugin] Unload\n");
 
     if (m_gameEventsHooked)
     {
@@ -48,12 +48,12 @@ void ServerPlugin::Unload()
 
 void ServerPlugin::Pause()
 {
-    Msg("[ServerPlugin] Pause");
+    Msg("[ServerPlugin] Pause\n");
 }
 
 void ServerPlugin::UnPause()
 {
-    Msg("[ServerPlugin] UnPause");
+    Msg("[ServerPlugin] UnPause\n");
 }
 
 const char* ServerPlugin::GetPluginDescription()
@@ -63,7 +63,7 @@ const char* ServerPlugin::GetPluginDescription()
 
 void ServerPlugin::LevelInit(const char* pMapName)
 {
-    Msg("[ServerPlugin] LevelInit: \"%s\"", pMapName);
+    Msg("[ServerPlugin] LevelInit: \"%s\"\n", pMapName);
     ListenToGameEvent("player_hurt");
 }
 
@@ -77,12 +77,12 @@ void ServerPlugin::GameFrame(bool simulating)
 
 void ServerPlugin::LevelShutdown()
 {
-    Msg("[ServerPlugin] LevelShutdown");
+    Msg("[ServerPlugin] LevelShutdown\n");
 }
 
 void ServerPlugin::ClientPutInServer(edict_t* pEntity, const char* playername)
 {
-    Msg("[ServerPlugin] ClientPutInServer: \"%s\"", playername);
+    Msg("[ServerPlugin] ClientPutInServer: \"%s\"\n", playername);
 }
 
 void ServerPlugin::SetCommandClient(int index)
@@ -111,7 +111,7 @@ PLUGIN_RESULT ServerPlugin::ClientConnect(
     int         maxrejectlen
 )
 {
-    Msg("[ServerPlugin] ClientConnect: \"%s\" from \"%s\"", pszName, pszAddress);
+    Msg("[ServerPlugin] ClientConnect: \"%s\" from \"%s\"\n", pszName, pszAddress);
     return PLUGIN_CONTINUE;
 }
 
@@ -122,13 +122,13 @@ PLUGIN_RESULT ServerPlugin::ClientCommand(edict_t* pEntity, const CCommand& args
         return PLUGIN_CONTINUE;
     }
 
-    Msg("[ServerPlugin] ClientCommand: \"%s\"", args.GetCommandString());
+    Msg("[ServerPlugin] ClientCommand: \"%s\"\n", args.GetCommandString());
     return PLUGIN_CONTINUE;
 }
 
 PLUGIN_RESULT ServerPlugin::NetworkIDValidated(const char* pszUserName, const char* pszNetworkID)
 {
-    Msg("[ServerPlugin] NetworkIDValidated: \"%s\" with ID \"%s\"", pszUserName, pszNetworkID);
+    Msg("[ServerPlugin] NetworkIDValidated: \"%s\" with ID \"%s\"\n", pszUserName, pszNetworkID);
     return PLUGIN_CONTINUE;
 }
 
@@ -144,7 +144,7 @@ void ServerPlugin::OnQueryCvarValueFinished(
 
 void ServerPlugin::FireGameEvent(IGameEvent* event)
 {
-    Msg("[ServerPlugin] FireGameEvent: \"%s\"", event->GetName());
+    Msg("[ServerPlugin] FireGameEvent: \"%s\"\n", event->GetName());
 }
 
 void ServerPlugin::ListenToGameEvent(const char* name)
