@@ -15,13 +15,22 @@ host_system = host_machine.system()
 arch = get_option('arch')
 buildtype = get_option('buildtype')
 
-if compiler == 'msvc'
-elif compiler == 'gcc'
+# Sanity checks
+if compiler != 'gcc' and compiler != 'clang' 
+  error('Unsupported compiler "@0@"', compiler)
+endif
+if host_system != 'linux' and host_system != 'windows'
+  error('Unsupported host system system "@0@"', host_system)
+endif
+if arch != 'x86' and arch != 'x64'
+  error('Unsupported arch "@0@"', arch)
+endif
+
+# Compiler specific defines
+if compiler == 'gcc' or compiler == 'clang'
   compiler_args += [
     '-DGNUC'
   ]
-else
-  error('Unsupported compiler "@0@"', compiler)
 endif
 
 # Warnings
@@ -37,8 +46,12 @@ elif compiler == 'gcc'
     # '-Werror',
     '-Wno-overloaded-virtual',
   ]
-else
-  error('Unsupported compiler "@0@"', compiler)
+elif compiler == 'clang'
+  compiler_args += [
+    # '-Werror',
+    '-Wno-overloaded-virtual',
+    '-fms-extensions', # narrowing casts
+  ]
 endif
 
 # Debug/Release target
@@ -51,13 +64,11 @@ if buildtype == 'debug'
     compiler_args += [
       '/Od',
     ]
-  elif compiler == 'gcc'
+  elif compiler == 'gcc' or compiler == 'clang'
     compiler_args += [
       '-g',
       '-O0',
     ]
-  else
-    error('Unsupported compiler "@0@"', compiler)
   endif
 else
   compiler_args += [
@@ -67,12 +78,10 @@ else
     compiler_args += [
       '/O2',
     ]
-  elif compiler == 'gcc'
+  elif compiler == 'gcc' or compiler == 'clang'
     compiler_args += [
       '-O3',
     ]
-  else
-    error('Unsupported compiler "@0@"', compiler)
   endif
 endif
 
@@ -113,13 +122,11 @@ elif host_system == 'linux'
   linker_args += [
     '-static-libgcc',
   ]
-else
-  error('Unsupported host system system "@0@"', host_system)
 endif
 
 # CPU architecture
 if arch == 'x86'
-  if compiler == 'gcc'
+  if compiler == 'gcc' or compiler == 'clang'
     compiler_args += [
       '-m32',
     ]
@@ -132,7 +139,7 @@ elif arch == 'x64'
     '-DX64BITS',
     '-DPLATFORM_64BITS',
   ]
-  if compiler == 'gcc'
+  if compiler == 'gcc' or compiler == 'clang'
     compiler_args += [
       '-m64',
     ]
@@ -140,8 +147,6 @@ elif arch == 'x64'
       '-m64',
     ]
   endif
-else
-  error('Unsupported arch "@0@"', arch)
 endif
 
 # Target specific workarounds
@@ -161,7 +166,6 @@ endif
 sdk_includes = include_directories([
   'include/hl2sdk/public',
   'include/hl2sdk/public/engine',
-  'include/hl2sdk/public/game/client',
   'include/hl2sdk/public/game/server',
   'include/hl2sdk/public/mathlib',
   'include/hl2sdk/public/tier0',
@@ -188,8 +192,6 @@ if host_system == 'windows'
       cpp.find_library('tier1', dirs: [dir_x64], required: true),
       cpp.find_library('vstdlib', dirs: [dir_x64], required: true),
     ]
-  else
-    error('Unsupported host system "@0@" and arch "@1@" for libraries')
   endif
 elif host_system == 'linux'
   if arch == 'x86'
@@ -220,11 +222,7 @@ elif host_system == 'linux'
       cpp.find_library('tier1', dirs: [dir_x64], required: true),
       cpp.find_library('vstdlib_srv', dirs: [dir_x64], required: true),
     ]
-  else
-    error('Unsupported host system "@0@" and arch "@1@" for libraries')
   endif
-else
-  error('Unsupported host system "@0@" and arch "@1@" for libraries')
 endif
 
 add_project_arguments(cpp.get_supported_arguments(compiler_args), language: 'cpp')
