@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 ARCHS=('x86' 'x64')
-COMPILERS=('g++')
+COMPILERS=('g++' 'clang++')
 BUILDTYPES=('debug' 'release')
 BRANCHES=(
     'bgt'
@@ -13,11 +13,11 @@ BRANCHES=(
     # 'cs2' #new.h
     # 'csgo' #new.h
     'css'
-    # 'darkm' #public/game/client
+    # 'darkm' #public/game/server
     'dods'
     # 'doi' #new.h
     # 'dota' #new.h
-    # 'episode1' #public/game/client
+    # 'episode1' #public/game/server
     'eye'
     'gmod'
     'hl2dm'
@@ -74,6 +74,18 @@ do
 
         for CMP in "${COMPILERS[@]}"
         do
+            # memdbgon.h forces NO_MALLOC_OVERRIDE,
+            # utlmemory.h _aligned_malloc undefined.
+            # Should we always define NO_MALLOC_OVERRIDE on clang?
+            if [ "$CMP" = "clang++" ]
+            then
+                if [ "$BRANCH" = "gmod" ] || [ "$BRANCH" = "tf2" ]
+                then
+                    echo "$BRANCH does not support $CMP, skipping!"
+                    continue
+                fi
+            fi
+
             export CXX="$CMP"
 
             for TYPE in "${BUILDTYPES[@]}"

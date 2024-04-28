@@ -26,17 +26,12 @@ if arch != 'x86' and arch != 'x64'
   error('Unsupported arch "@0@"', arch)
 endif
 
-# Compiler specific defines
-if compiler == 'gcc' or compiler == 'clang'
-  compiler_args += [
-    '-DGNUC'
-  ]
-endif
-
 # Warnings
 compiler_args += [
   '-Wall',
 ]
+
+# Compiler specific stuff
 if compiler == 'msvc'
   compiler_args += [
     # '/WX',
@@ -44,13 +39,29 @@ if compiler == 'msvc'
 elif compiler == 'gcc'
   compiler_args += [
     # '-Werror',
+    '-DGNUC',
+    '-DNO_MALLOC_OVERRIDE',
+    '-msse',
+    '-fPIC',
+    '-fpermissive',
     '-Wno-overloaded-virtual',
+  ]
+  linker_args += [
+    '-static-libgcc',
   ]
 elif compiler == 'clang'
   compiler_args += [
     # '-Werror',
+    '-DGNUC',
+    '-msse',
+    '-fPIC',
+    '-fpermissive',
     '-Wno-overloaded-virtual',
+    '-Wno-register',
     '-fms-extensions', # narrowing casts
+  ]
+  linker_args += [
+    '-static-libgcc',
   ]
 endif
 
@@ -114,13 +125,6 @@ elif host_system == 'linux'
 	'-D_vsnprintf=vsnprintf',
 	'-D_alloca=alloca',
 	'-Dstrcmpi=strcasecmp',
-    '-DNO_MALLOC_OVERRIDE',
-    '-msse',
-    '-fPIC',
-    '-fpermissive',
-  ]
-  linker_args += [
-    '-static-libgcc',
   ]
 endif
 
@@ -150,12 +154,12 @@ elif arch == 'x64'
 endif
 
 # Target specific workarounds
-if host_system == 'linux' and buildtype == 'release'
+if host_system == 'linux' and buildtype == 'release' and compiler == 'gcc'
   compiler_args += [
     '-Wno-strict-aliasing',
   ]
 endif
-if host_system == 'linux' and arch == 'x64'
+if host_system == 'linux' and arch == 'x64' and compiler == 'gcc'
   compiler_args += [
     # CThreadSpinRWLock() COMPILE_TIME_ASSERT wrong LockInfo_t size
     '-U_DEBUG',

@@ -4,50 +4,46 @@ A starter template for hl2sdk server plugins.
 
 ## Requirements
 
-Meson, Ninja, gcc.
+Meson, Ninja, gcc/clang.
 
 ## Support
 
-### Compiler & targets
-
-|          | Linux x86 | Linux x64 | Windows x86 | Windows x64 |
-| ----     | ----      | ----      | ----        | ----        |
-| gcc      | yes       | yes       | no          | no          |
-| clang    | no        | no        | no          | no          |
-| msvc     | no        | no        | no          | no          |
-
-### SDK branches
-
-| Branch      | Supported |
-| ----        | ----      |
-| bgt         | yes       |
-| blade       | no        |
-| bms         | no        |
-| contagion   | no        |
-| cs2         | no        |
-| csgo        | no        |
-| css         | yes       |
-| darkm       | no        |
-| dods        | yes       |
-| doi         | no        |
-| dota        | no        |
-| episode1    | no        |
-| eye         | yes       |
-| gmod        | yes       |
-| hl2dm       | yes       |
-| insurgency  | no        |
-| l4d         | yes       |
-| l4d2        | yes       |
-| mcv         | no        |
-| nucleardawn | yes       |
-| orangebox   | yes       |
-| portal2     | no        |
-| pvkii       | no        |
-| sdk2013     | no        |
-| swarm       | no        |
-| tf2         | yes       |
-
 For more details check out the `build-matrix.sh` script and meson files.
+
+### Linux
+
+| Branch      | gcc     | clang |
+| ----        | ----    | ----  |
+| bgt         | x86     | x86   |
+| blade       | -       | -     |
+| bms         | -       | -     |
+| contagion   | -       | -     |
+| cs2         | -       | -     |
+| csgo        | -       | -     |
+| css         | x86     | x86   |
+| darkm       | -       | -     |
+| dods        | x86     | x86   |
+| doi         | -       | -     |
+| dota        | -       | -     |
+| episode1    | -       | -     |
+| eye         | x86     | x86   |
+| gmod        | x86     | -     |
+| hl2dm       | x86     | x86   |
+| insurgency  | -       | -     |
+| l4d         | x86     | x86   |
+| l4d2        | x86     | x86   |
+| mcv         | -       | -     |
+| nucleardawn | x86     | x86   |
+| orangebox   | x86     | x86   |
+| portal2     | -       | -     |
+| pvkii       | -       | -     |
+| sdk2013     | -       | -     |
+| swarm       | -       | -     |
+| tf2         | x86/x64 | -     |
+
+### Windows
+
+Not at the moment.
 
 ## Building
 
